@@ -1,43 +1,39 @@
 "use client";
 
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-
 import { Fab } from "@mui/material";
 
-import { SITE } from "@/config/site";
+import appConfig from "@/config/appConfig";
 
-export default function WhatsAppButton(){
+export default function WhatsAppButton() {
 
-const link=`https://wa.me/${SITE.whatsapp}`;
+    const mensaje = encodeURIComponent(
+        appConfig.contact.whatsappMessage
+    );
 
-return(
+    const link =
+        `https://wa.me/${appConfig.contact.whatsapp}?text=${mensaje}`;
 
-<Fab
+    return (
 
-color="success"
+        <Fab
+            color="success"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            sx={{
+                position: "fixed",
+                right: 25,
+                bottom: 25,
+                zIndex: 9999
+            }}
+        >
 
-href={link}
+            <WhatsAppIcon />
 
-target="_blank"
+        </Fab>
 
-sx={{
-
-position:"fixed",
-
-right:25,
-
-bottom:25,
-
-zIndex:9999
-
-}}
-
->
-
-<WhatsAppIcon/>
-
-</Fab>
-
-)
+    );
 
 }

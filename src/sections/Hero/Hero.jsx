@@ -1,129 +1,84 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 import {
-
-Box,
-Button,
-Container,
-Typography
-
+  Box,
+  Button,
+  Container,
+  Typography,
 } from "@mui/material";
 
-import { SITE } from "@/config/site";
+import appConfig from "@/config/appConfig";
 
-export default function Hero(){
+export default function Hero() {
 
-return(
+  return (
 
-<Box
+    <Box
+      sx={{
+        background: `linear-gradient(135deg,
+          ${appConfig.producer.primaryColor},
+          ${appConfig.producer.secondaryColor})`,
+        color: "white",
+        py: 14,
+      }}
+    >
 
-sx={{
+      <Container maxWidth="lg">
 
-background:"linear-gradient(135deg,#0057B8,#00AEEF)",
+        <Typography
+          variant="h2"
+          fontWeight={800}
+          mb={3}
+        >
+          {appConfig.producer.slogan}
+        </Typography>
 
-color:"white",
+        <Typography
+          variant="h5"
+          mb={5}
+          maxWidth={700}
+        >
+          {appConfig.producer.description}
+        </Typography>
 
-py:14,
+        <Button
+          component={Link}
+          href="/cotizar"
+          variant="contained"
+          size="large"
+          sx={{
+            background: "white",
+            color: appConfig.producer.primaryColor,
+            fontWeight: 700,
+            mr: 2,
+            "&:hover": {
+              background: "#f5f5f5",
+            },
+          }}
+        >
+          Solicitar Cotización
+        </Button>
 
-}}
+        <Button
+          variant="outlined"
+          sx={{
+            borderColor: "white",
+            color: "white",
+            "&:hover": {
+              borderColor: "white",
+              background: "rgba(255,255,255,.08)",
+            },
+          }}
+        >
+          Conocer Coberturas
+        </Button>
 
->
+      </Container>
 
-<Container maxWidth="lg">
+    </Box>
 
-<Typography
-
-variant="h2"
-
-fontWeight={800}
-
-mb={3}
-
->
-
-{SITE.slogan}
-
-</Typography>
-
-<Typography
-
-variant="h5"
-
-mb={5}
-
-maxWidth={700}
-
->
-
-{SITE.descripcion}
-
-</Typography>
-
-<Button
-
-component={Link}
-
-href="/cotizar"
-
-variant="contained"
-
-size="large"
-
-sx={{
-
-background:"white",
-
-color:SITE.color,
-
-fontWeight:700,
-
-mr:2,
-
-"&:hover":{
-
-background:"#f5f5f5"
-
-}
-
-}}
-
->
-
-Solicitar Cotización
-
-</Button>
-
-<Button
-
-variant="outlined"
-
-sx={{
-
-borderColor:"white",
-
-color:"white",
-
-"&:hover":{
-
-borderColor:"white"
-
-}
-
-}}
-
->
-
-Conocer Coberturas
-
-</Button>
-
-</Container>
-
-</Box>
-
-)
+  );
 
 }

@@ -7,6 +7,9 @@ import {
   Card,
   CardContent,
   Typography,
+  Alert,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 
 import {
@@ -21,27 +24,26 @@ import PersonStep from "./steps/PersonStep";
 import CoverageStep from "./steps/CoverageStep";
 
 import NavigationButtons from "@/components/NavigationButtons/NavigationButtons";
+
 import { enviarCotizacion } from "@/services/quoteService";
+import { abrirWhatsApp } from "@/services/whatsappService";
+
+import appConfig from "@/config/appConfig";
+
 export default function QuotePage() {
 
   const [step, setStep] = useState(0);
-
-  //---------------------------------------
-  // React Hook Form
-  //---------------------------------------
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const methods = useForm({
 
     defaultValues:{
 
-      // Vehículo
-
       marca:"",
       modelo:"",
       anio:"",
       patente:"",
-
-      // Titular
 
       nombre:"",
       apellido:"",
@@ -49,9 +51,8 @@ export default function QuotePage() {
       telefono:"",
       email:"",
 
-      // Cobertura
-
-      cobertura:""
+      cobertura:"",
+      observaciones:""
 
     }
 
@@ -63,9 +64,9 @@ export default function QuotePage() {
 
   const next = () => {
 
-    if(step<2){
+    if(step < 2){
 
-      setStep(step+1);
+      setStep(step + 1);
 
     }
 
@@ -73,89 +74,78 @@ export default function QuotePage() {
 
   const back = () => {
 
-    if(step>0){
+    if(step > 0){
 
-      setStep(step-1);
+      setStep(step - 1);
 
     }
 
   };
 
   //---------------------------------------
-  // Finalizar
+  // Enviar
   //---------------------------------------
 
   const onSubmit = async (data) => {
 
+    setLoading(true);
+    setError("");
+
     try{
 
-        const respuesta = await enviarCotizacion(data);
+      const respuesta = await enviarCotizacion(data);
 
-        if(respuesta.ok){
+console.log("RESPUESTA API:", respuesta);
 
-            alert("Cotización enviada correctamente");
+if (respuesta.ok) {
+    abrirWhatsApp(data);
+} else {
+    setError(
+        respuesta.error || "No se pudo registrar la cotización."
+    );
+}
 
-        }
+    }catch(err){
+
+      console.error(err);
+
+      setError("Ocurrió un error al enviar la solicitud.");
+
+    }finally{
+
+      setLoading(false);
 
     }
-    catch(error){
 
-        console.error(error);
-
-        alert("Ocurrió un error.");
-
-    }
-
-};
+  };
 
   return (
 
 <FormProvider {...methods}>
 
 <Container
-
 maxWidth="md"
-
-sx={{
-
-py:8
-
-}}
-
+sx={{py:8}}
 >
 
 <Card
-
 sx={{
-
 borderRadius:5,
-
 boxShadow:6
-
 }}
-
 >
 
 <CardContent
-
 sx={{
-
 p:{xs:3,md:5}
-
 }}
-
 >
 
 <Typography
-
 variant="h3"
-
 fontWeight={700}
-
 align="center"
-
 mb={2}
-
 >
 
 Solicitar Cotización
@@ -163,71 +153,51 @@ Solicitar Cotización
 </Typography>
 
 <Typography
-
 align="center"
-
 color="text.secondary"
-
 mb={5}
-
 >
 
-Completá los siguientes datos para recibir una cotización personalizada.
+{appConfig.quote.description}
 
 </Typography>
 
-<QuoteStepper
+<QuoteStepper step={step}/>
 
-step={step}
+{step===0 && <VehicleStep/>}
+{step===1 && <PersonStep/>}
+{step===2 && <CoverageStep/>}
 
-/>
+{error && (
 
-{
+<Alert severity="error" sx={{mt:3}}>
 
-step===0&&(
+{error}
 
-<VehicleStep/>
+</Alert>
 
-)
+)}
 
-}
+{loading && (
 
-{
+<Box sx={{display:"flex",justifyContent:"center",mt:3}}>
 
-step===1&&(
+<CircularProgress/>
 
-<PersonStep/>
+</Box>
 
-)
-
-}
-
-{
-
-step===2&&(
-
-<CoverageStep/>
-
-)
-
-}
+)}
 
 <NavigationButtons
 
 back={back}
 
 next={
-
 step===2
-
 ?
-
 methods.handleSubmit(onSubmit)
-
 :
-
 next
-
 }
 
 firstStep={step===0}

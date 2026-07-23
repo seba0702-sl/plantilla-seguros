@@ -23,8 +23,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { NAVIGATION } from "@/config/navigation";
-import { SITE } from "@/config/site";
-
+import appConfig from "@/config/appConfig";
+console.log("APP CONFIG:", appConfig);
+console.log("PRODUCER:", appConfig?.producer);
 export default function Navbar(){
 
     const [open,setOpen]=useState(false);
@@ -46,11 +47,11 @@ variant="h5"
 fontWeight={800}
 sx={{
 flexGrow:1,
-color:SITE.color
+color: appConfig.producer.primaryColor
 }}
 >
 
-{SITE.empresa}
+{appConfig.producer.company}
 
 </Typography>
 

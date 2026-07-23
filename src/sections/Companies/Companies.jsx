@@ -9,9 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import { SITE } from "@/config/site";
+import appConfig from "@/config/appConfig";
 
 export default function Companies() {
+  console.log("CONFIG", appConfig);
+console.log("COMPANIES", appConfig.companies);
+console.log("ES ARRAY", Array.isArray(appConfig.companies));
   return (
     <Box
       id="companias"
@@ -41,10 +44,10 @@ export default function Companies() {
 
         <Grid container spacing={4}>
 
-          {SITE.companias.map((item) => (
+          {appConfig.companies.map((company) => (
 
             <Grid
-              key={item.nombre}
+              key={company.name}
               size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }}
             >
 
@@ -64,8 +67,8 @@ export default function Companies() {
 
                   <Box
                     component="img"
-                    src={item.logo}
-                    alt={item.nombre}
+                    src={company.logo}
+                    alt={company.name}
                     sx={{
                       height: 70,
                       objectFit: "contain",
@@ -74,7 +77,7 @@ export default function Companies() {
                   />
 
                   <Typography fontWeight={700}>
-                    {item.nombre}
+                    {company.name}
                   </Typography>
 
                 </CardContent>
