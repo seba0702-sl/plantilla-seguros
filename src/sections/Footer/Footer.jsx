@@ -13,8 +13,7 @@ IconButton
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
-
-import { SITE } from "@/config/site";
+import appConfig from "@/config/appConfig";
 
 export default function Footer(){
 
@@ -56,7 +55,7 @@ mb={3}
 
 >
 
-{SITE.empresa}
+{appConfig.empresa}
 
 </Typography>
 
@@ -88,7 +87,7 @@ Contacto
 
 <Typography>
 
-{SITE.telefono}
+{appConfig.telefono}
 
 </Typography>
 
@@ -100,7 +99,7 @@ Contacto
 
 <Typography>
 
-{SITE.email}
+{appConfig.email}
 
 </Typography>
 
@@ -154,7 +153,7 @@ textAlign:"center"
 variant="body2"
 >
 
-© {new Date().getFullYear()} {SITE.empresa}
+© {new Date().getFullYear()} {appConfig.empresa}
 
 </Typography>
 
